@@ -55,10 +55,16 @@ class _TopFilmesPageState extends State<TopFilmesPage> {
                   margin: const EdgeInsets.only(bottom: 5),
                   height: 400,
                   decoration: BoxDecoration(
-                      image: DecorationImage(image: NetworkImage(_movies[index].image), fit: BoxFit.cover),
+                      image: DecorationImage(image: NetworkImage(_movies[index].image), fit: BoxFit.contain),
                       borderRadius: BorderRadius.circular(15)),
                   child: Center(
-                      child: Text(_movies[index].rank, style: const TextStyle(color: Colors.white, fontSize: 32))),
+                      child: Column(
+                    children: [
+                      Text(_movies[index].rank, style: const TextStyle(color: Colors.black, fontSize: 32)),
+                      const SizedBox(height: 5),
+                      Text(_movies[index].title, style: const TextStyle(color: Colors.black, fontSize: 32))
+                    ],
+                  )),
                 ),
               ),
               itemCount: _movies.length,

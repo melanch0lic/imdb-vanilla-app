@@ -16,7 +16,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   void search(String filmName) async {
-    if (filmName == '') return;
+    if (filmName == '') {
+      setState(() {
+        _movies.clear();
+      });
+      return;
+    }
 
     setState(() {
       _isLoading = true;
@@ -65,37 +70,39 @@ class _HomePageState extends State<HomePage> {
                       child: CircularProgressIndicator(),
                     ),
                   )
-                : Expanded(
-                    child: ListView.builder(
-                      itemBuilder: (context, index) => Container(
-                        alignment: Alignment.bottomLeft,
-                        margin: const EdgeInsets.only(bottom: 5),
-                        height: 200,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(image: NetworkImage(_movies[index].image), fit: BoxFit.cover),
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.5), borderRadius: BorderRadius.circular(15)),
-                          padding: const EdgeInsets.all(8),
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  _movies[index].title,
-                                  style: const TextStyle(color: Colors.white, fontSize: 24),
-                                ),
-                                Text(
-                                  _movies[index].description,
-                                  style: const TextStyle(color: Colors.white, fontSize: 16),
-                                )
-                              ]),
+                : _movies.isEmpty
+                    ? const Expanded(child: Center(child: Text('Введите название фильма')))
+                    : Expanded(
+                        child: ListView.builder(
+                          itemBuilder: (context, index) => Container(
+                            alignment: Alignment.bottomLeft,
+                            margin: const EdgeInsets.only(bottom: 5),
+                            height: 200,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(image: NetworkImage(_movies[index].image), fit: BoxFit.cover),
+                                borderRadius: BorderRadius.circular(15)),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.black.withOpacity(0.5), borderRadius: BorderRadius.circular(15)),
+                              padding: const EdgeInsets.all(8),
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      _movies[index].title,
+                                      style: const TextStyle(color: Colors.white, fontSize: 24),
+                                    ),
+                                    Text(
+                                      _movies[index].description,
+                                      style: const TextStyle(color: Colors.white, fontSize: 16),
+                                    )
+                                  ]),
+                            ),
+                          ),
+                          itemCount: _movies.length,
                         ),
-                      ),
-                      itemCount: _movies.length,
-                    ),
-                  )
+                      )
           ],
         ),
       ),
